@@ -7,8 +7,6 @@ tagline: "Supporting tagline"
 tags: [elasticsearch, es, hadoop]
 ---
 
----
-
 # 1. WWH
 
 ##### What?
