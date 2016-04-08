@@ -1,14 +1,15 @@
 ---
 layout: post
 title:  "在Ubuntu14上搭建hdp2.4"
-date:   2016-04-07 17:00:00 +0800
+date:   2016-04-08 15:30:00 +0800
 category: 安装文档
 tagline: "Supporting tagline"
 tags: [IT, 大数据, 云计算, hadoop, hdp]
 ---
 
 # 1. 环境准备 #
-#### 硬件 ####
+
+### 硬件
 Ubuntu 14.04 64bit * 3
 
 ##### node-server
@@ -19,7 +20,7 @@ Ubuntu 14.04 64bit * 3
 ##### repo-server
 * 192.168.0.2
 
-#### 软件 ####
+### 软件 ###
 * Ambari-2.2.1.1
 * HDP-2.4.0.0
 * jdk-8u71-linux-x64.tar.gz
@@ -61,6 +62,7 @@ Ubuntu 14.04 64bit * 3
 6. 解压: tar xzvf ambari-2.2.1.1-ubuntu14.tar.gz && tar xzvf HDP-2.4.0.0-ubuntu14-deb.tar.gz && tar xzvf HDP-UTILS-1.1.0.20-ubuntu14.tar.gz
 7. mkdir -p ambari/ubuntu14/2.x/updates/2.2.1.1
 8. mv AMBARI-2.2.1.1/ubuntu14/[VERSION_NUMBER]/* ambari/ubuntu14/2.x/updates/2.2.1.1/
+
 	```
 	这一步是保证ambari/ubuntu14/2.x/updates/2.2.1.1/目录下结构如下:
 
