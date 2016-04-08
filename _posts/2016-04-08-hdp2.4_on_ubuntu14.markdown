@@ -121,23 +121,23 @@ hdp2.3已经开始支持jdk1.8, 使用jdk1.7的话版本不应低于1.7_67
 修改hosts文件, 使node-server之间通过伪域名互相访问, 并且把repo-server的伪域名也加入: vim /etc/hosts
 
 ```
-127.0.0.1       localhost
+127.0.0.1 localhost
+127.0.1.1       localhost.localdomain   localhost
 
 # The following lines are desirable for IPv6 capable hosts
-::1     localhost ip6-localhost ip6-loopback
+e:1     localhost ip6-localhost ip6-loopback
 ff02::1 ip6-allnodes
 ff02::2 ip6-allrouters
 
-# hostname loopback address
-127.0.1.1       node1
 
 192.168.0.2 hdp-repo.tataufo.com
+
 192.168.10.51 node1 node1.hadoop
 192.168.10.52 node2 node2.hadoop
 192.168.10.53 node3 node3.hadoop
 ```
 
-> 注意: "127.0.1.1  node1" 一行的, 每台主机配置自己的主机名, 例如node2需要配置为"127.0.1.1 node2"
+> 注意: 这里不要添加形如 "127.0.1.1 node1"的配置, 否则会导致node1的50070端口只能在本机通过http://node1:50070访问, 从而导致其他组件无法正常启动
 
 ### 3.6 SSH无密码登录 ###
 采用Ambari来安装部署hadoop集群需要配置node-server间互相ssh无密码登录
