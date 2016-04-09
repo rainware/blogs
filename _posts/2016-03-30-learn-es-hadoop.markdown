@@ -385,6 +385,10 @@ marvel-agent插件:
 	marvel插件需要在kibana中安装marvel server
 	bin/kibana plugin --install elasticsearch/marvel/latest
 
+sense插件: 在kibana中安装
+
+	bin/kibana plugin --install elastic/sense
+
 打包后重新上传安装并启动
 
 head界面:
