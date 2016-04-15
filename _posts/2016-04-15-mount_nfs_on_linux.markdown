@@ -7,7 +7,7 @@ tagline: "Supporting tagline"
 tags: [linux, mount, 格式化, 分区, nfs, 网盘, fdisk, ubuntu]
 ---
 
-在服务器众多的情况下, 很多时候我们希望我们只在一台服务器上做操作(拉取代码, 上传文件), 而其他服务器上能自动同步这些文件.
+在服务器众多的情况下, 很多时候我们希望我们只在一台服务器上做操作(拉取代码, 上传文件), 而其他服务器上能自动共享这些文件.
 
 这里介绍使用NFS来为服务器挂载网盘.
 
@@ -21,9 +21,9 @@ $ apt-get install nfs-kernel-server
 
 # 2. NFS server
 
-选取一台主机作为NFS server, 选取一个目录作为同步目录, 这样以后我们在该目录下的做的文件操作, 就能同步到其他的主机上了.
+选取一台主机作为NFS server, 选取一个目录作为共享目录, 这样以后我们在该目录下的做的文件操作, 就能共享到其他的主机上了.
 
-* 创建同步目录
+* 创建共享目录
 
 ```
 $ mkdir /tatafile
@@ -60,7 +60,7 @@ $ service nfs-kernel-server restart
 
 # 3. NFS client
 
-* 创建同步目录
+* 创建共享目录
 
 ```
 $ mkdir /tatafile
