@@ -87,10 +87,10 @@ Ubuntu 14.04 64bit * 3
 以root身份登录到node-server上
 创建存放安装包的目录: mkdir /mnt/packages
 
-### 3.1 Python ###
+### 3.1 <span id="3.1">Python</span>
 确保python版本不高于2.7.9(由于证书验证机制的不同)
 
-### 3.2 JDK ###
+### 3.2 <span id="3.2">JDK</span>
 hdp2.3已经开始支持jdk1.8, 使用jdk1.7的话版本不应低于1.7_67
 
 我们这里使用jdk1.8.0_71
@@ -106,18 +106,17 @@ hdp2.3已经开始支持jdk1.8, 使用jdk1.7的话版本不应低于1.7_67
 		export PATH=$PATH:$JAVA_HOME/bin;
 * source /etc/profile
 
-### 3.3 主机名/防火墙/SELinux ###
+### 3.3 <span id="3.3">主机名/防火墙/SELinux</span>
 * vim /etc/hostname, 分别将主机名修改为node1, node2, node3
 * 关闭防火墙: ufw disable
 * Ubuntu默认没有打开SElinux, 无须考虑
 
-### 3.4 NTP
-时间同步服务
+### 3.4 <span id="3.4">NTP时间同步服务</span>
 
 * apt-get install ntp
 * service ntp status
 
-### 3.5 hosts文件 ###
+### 3.5 <span id="3.5">hosts文件</span>
 修改hosts文件, 使node-server之间通过伪域名互相访问, 并且把repo-server的伪域名也加入: vim /etc/hosts
 
 ```
@@ -139,7 +138,7 @@ ff02::2 ip6-allrouters
 
 > 注意: 这里不要添加形如 "127.0.1.1 node1"的配置, 否则会导致node1的50070端口只能在本机通过http://node1:50070访问, 从而导致其他组件无法正常启动
 
-### 3.6 SSH无密码登录 ###
+### 3.6 <span id="3.6">SSH无密码登录</span>
 采用Ambari来安装部署hadoop集群需要配置node-server间互相ssh无密码登录
 
 * 运行ssh-keygen命令, 一直回车, 生成RSA密钥对
