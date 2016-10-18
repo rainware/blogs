@@ -363,7 +363,9 @@ hadoop jar elasticsearch-yarn-2.2.0.jar -install-es
 
 hadoop jar elasticsearch-yarn-2.2.0.jar -install
 
-hadoop jar elasticsearch-yarn-2.2.0.jar -start containers=x
+hadoop jar elasticsearch-yarn-2.2.0.jar -start containers=x container.mem=8192 env.ES_HEAP_SIZE=8g
+
+> 这里container.mem 和 env.ES_HEAP_SIZE分别用来指定container需要的内存大小和ES运行的堆内存大小
 
 这里的x即es集群将启动的节点数
 
