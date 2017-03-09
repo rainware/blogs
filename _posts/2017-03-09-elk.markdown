@@ -17,7 +17,7 @@ ELK/LEK = Elasticsearch + Logstash + Kibana
 
 [Documents](https://www.elastic.co/guide/index.html)
 
-![ ](../images/elk/elk.png " ")
+![ ](/blogs/images/elk/elk.png " ")
 
 # 2. 安装
 
