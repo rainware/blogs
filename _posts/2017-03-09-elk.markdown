@@ -1,0 +1,257 @@
+---
+layout: post
+title:  "ELK简易教程"
+date:   2017-03-09 15:22:00 +0800
+category: 教程
+tagline: "Supporting tagline"
+tags: [lek, elk, elasticsearch, logstash, kibana, 日志分析平台]
+---
+
+# 1. 简介
+
+ELK/LEK = Elasticsearch + Logstash + Kibana
+
+* Logstash: 采集， 解析， 传输
+* Elasticsearch: 存储，索引，查询
+* Kibana: 查询界面，可视化分析
+
+[Documents](https://www.elastic.co/guide/index.html)
+
+![ ](../images/elk/elk.png " ")
+
+# 2. 安装
+
+所有安装包都可以从官网直接下载，尽量保证e,l,k的版本互相匹配
+
+### 2.1 logstash
+
+下载安装包解压后进入目录
+
+##### 2.1.1 配置文件
+
+编辑配置文件，配置文件中包含三部分:
+* input: 输入
+* filter: 过滤(解析)器
+* output: 输出
+
+`vim logstash.conf`
+
+一个简单的模板
+```ruby
+input {
+        file {
+                # 日志文件路径
+                path => "/a/b/c_*.log"
+                #path => "/home/test_lek.log"
+                # 可以为不同的输入设置不同的type
+                type => "c"
+        }
+        file {
+                path => "/a/b/e_*.log"
+                type => "e"
+        }
+}
+
+filter {
+        # 过滤掉不符合格式的行
+        if [message] !~ "^\d{4}\/\d{2}\/\d{2}-\d{2}:\d{2}:\d{2}*" {
+                drop {}
+        }
+
+        # grok正则解析, 其中DATETIME/SOMETHING都是自定义的正则公式, 存放在patterns/extra文件中, logstash也有内置的一些正则公式, 比如NUMBER
+        grok {
+                match => {"message" => "%{DATETIME:tmp_timestamp}\s\[%{SOMETHING:thread}\]\s%{SOMETHING:log_level}\s%{SOMETHING:cls}\s%{SOMETHING:something}\s%{SOMETHING:something}\s%{ANYTHING:text}"}
+        }
+
+        if [text] =~ "^\{.*\}$" {
+                # json解析
+                json {
+                        source => "text"
+                        target => "o" # 不指定target则解析出来的字段将作为顶级属性
+                        add_tag => ["json"]
+                }
+        } else if [text] =~ "^\[POST\s\/rest\/gifts\]\sGift request\s*" {
+                grok {
+                        match => {"text" => "\[POST\s\/rest\/gifts\]\sGift request\s->\s%{ANYTHING:GiftRequest}"}
+                }
+                json {
+                        source => "GiftRequest"
+                        target => "GiftRequest"
+                        add_tag => ["GiftRequest"]
+                }
+        }
+
+        date {  
+                # 将tmp_timestamp字段解析为日期类型，并赋值给 @timestamp
+                match => [ "tmp_timestamp" , "yyyy/MM/dd-HH:mm:ss" ]
+        }
+
+        if "json" in [tags] {
+                mutate {
+                        add_field => {
+                                # 地理位置解析，es进行存储的时候geoip[location]字段作为geoip类型
+                                "[geoip][location][lat]" => "%{o[Latitude]}"
+                                "[geoip][location][lon]" => "%{o[Longitude]}"
+                        }
+                }
+        }
+
+}
+
+output {
+        elasticsearch {
+                hosts => ["x.x.x.x"]
+                # 按日期创建索引
+                index => "a-b-%{+YYYY.MM.dd}"
+        }
+        # 一般调试时时使用
+        stdout { codec => rubydebug }
+}
+```
+
+##### 2.1.2 正则公式
+
+`mkdir patterns`
+`vim extra`
+
+```
+DATETIME \d{4}/\d{2}/\d{2}-\d{2}:\d{2}:\d{2}
+SOMETHING .*?
+ANYTHING .*
+JSON \{\\".*?\}
+```
+
+##### 2.1.3 启动
+
+`bin/logstash -f logstash.conf`
+
+### 2.2 elasticsearch
+
+下载安装包解压后进入目录
+
+##### 2.2.1 配置文件
+
+`vim config/elasticsearch.yml`
+
+这里仅列出修改的地方
+
+```yaml
+# ---------------------------------- Cluster -----------------------------------
+#
+# Use a descriptive name for your cluster:
+#
+cluster.name: <what you like>
+
+# ----------------------------------- Paths ------------------------------------
+#
+# Path to directory where to store the data (separate multiple locations by comma):
+#
+path.data: /data1/data/elasticsearch
+#
+# Path to log files:
+#
+path.logs: /data/logs/elasticsearch
+#
+
+# ----------------------------------- Memory -----------------------------------
+#
+# Lock the memory on startup:
+#
+bootstrap.mlockall: true
+#
+# Make sure that the `ES_HEAP_SIZE` environment variable is set to about half the memory
+# available on the system and that the owner of the process is allowed to use this limit.
+#
+# Elasticsearch performs poorly when the system is swapping the memory.
+
+# ---------------------------------- Network -----------------------------------
+#
+# Set the bind address to a specific IP (IPv4 or IPv6):
+#
+network.host: 0.0.0.0
+#
+# Set a custom port for HTTP:
+#
+# http.port: 9200
+http.compression: true
+
+# --------------------------------- Discovery ----------------------------------
+#
+# Pass an initial list of hosts to perform discovery when new node is started:
+# The default list of hosts is ["127.0.0.1", "[::1]"]
+#
+discovery.zen.ping.unicast.hosts: ["x", "y", "z"]
+#
+# Prevent the "split brain" by configuring the majority of nodes (total number of nodes / 2 + 1):
+# 一条数据至少存储到x个节点上之后才认为存储成功
+discovery.zen.minimum_master_nodes: 2
+
+# ---------------------------------- Gateway -----------------------------------
+#
+# Block initial recovery after a full cluster restart until N nodes are started:
+#
+gateway.recover_after_nodes: 2
+```
+
+##### 2.2.2 安装插件
+
+两个比较好用的es管理插件：head, kopf
+
+`bin/plugin -install mobz/elasticsearch-head`
+`/bin/plugin -install lmenezes/elasticsearch-kopf`
+
+> 这两个插件在es5.x之后安装方式有所改变
+
+##### 2.2.3 内存设置
+
+一般使用ES_HEAP_SIZE环境变量来设置
+
+##### 2.2.4 启动
+
+`bin/elasticsearch`
+
+确认启动成功：http://localhost:9200
+
+通过插件查看集群状态:
+1. http://localhost:9200/_plugin/head
+2. http://localhost:9200/_plugin/kopf
+
+### 2.3 kibana
+
+下载安装包解压后进入目录
+
+##### 2.3.1 配置
+
+`vim config/kibana.yml`
+
+仅列出改动部分
+
+```yaml
+# Kibana is served by a back end server. This controls which port to use.
+# server.port: 5601
+
+# The host to bind the server to.
+server.host: "0.0.0.0"
+
+# The Elasticsearch instance to use for all your queries.
+elasticsearch.url: "http://10.15.179.36:9200"
+
+# Set the path to where you would like the process id file to be created.
+pid.file: /var/run/kibana.pid
+
+# If you would like to send the log output to a file you can set the path below.
+logging.dest: /data/logs/kibana.out
+
+```
+
+##### 2.3.2 安装插件
+
+sense editor是一个可以在kibana中通过rest api访问es的插件
+
+`bin/kibana plugin --install elastic/sense`
+
+##### 2.3.3 启动
+
+`bin/kibana serve`
+
+查看: http://localhost:5601
