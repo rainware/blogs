@@ -238,7 +238,7 @@ $ bin/plugin -install lmenezes/elasticsearch-kopf
 server.host: "0.0.0.0"
 
 # The Elasticsearch instance to use for all your queries.
-elasticsearch.url: "http://10.15.179.36:9200"
+elasticsearch.url: "http://x.x.x.x:9200"
 
 # Set the path to where you would like the process id file to be created.
 pid.file: /var/run/kibana.pid
