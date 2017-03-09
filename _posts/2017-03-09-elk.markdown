@@ -210,6 +210,14 @@ $ bin/plugin -install lmenezes/elasticsearch-kopf
 
 一般使用ES_HEAP_SIZE环境变量来设置
 
+可以在启动脚本中设置
+
+`$ vim bin/elasticsearch`
+
+```
+ES_HEAP_SIZE=8g
+```
+
 ##### 2.2.4 启动
 
 `$ bin/elasticsearch`
