@@ -295,25 +295,25 @@ reboot
 
 优化GPU设置：http://docs.aws.amazon.com/zh_cn/AWSEC2/latest/UserGuide/optimize_gpu.html
 
-1. 将 GPU 设置配置为永久
+  1. 将 GPU 设置配置为永久
 
-```
-nvidia-smi -pm 1
-```
+  ```
+  nvidia-smi -pm 1
+  ```
 
-2. 禁用实例上所有 GPU 的 autoboost 功能
+  2. 禁用实例上所有 GPU 的 autoboost 功能
 
-```
-nvidia-smi --auto-boost-default=0
-```
+  ```
+  nvidia-smi --auto-boost-default=0
+  ```
 
-3. 将所有 GPU 时钟速度设置为其最大频率
+  3. 将所有 GPU 时钟速度设置为其最大频率
 
-```
-nvidia-smi -ac 2505,1177
-```
+  ```
+  nvidia-smi -ac 2505,1177
+  ```
 
-参考: http://docs.aws.amazon.com/zh_cn/AWSEC2/latest/UserGuide/install-nvidia-driver.html
+  参考: http://docs.aws.amazon.com/zh_cn/AWSEC2/latest/UserGuide/install-nvidia-driver.html
 
 ### 2.2 安装cuda toolkit
 
