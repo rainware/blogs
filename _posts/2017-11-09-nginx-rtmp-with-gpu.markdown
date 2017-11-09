@@ -281,6 +281,7 @@ EOF
     ```
 
 * 下载安装nvidia driver
+
 ```
 wget http://us.download.nvidia.com/XFree86/Linux-x86_64/367.122/NVIDIA-Linux-x86_64-367.122.run
 
@@ -305,6 +306,7 @@ nvidia-smi --auto-boost-default=0
 ```
 
 3. 将所有 GPU 时钟速度设置为其最大频率
+
 ```
 nvidia-smi -ac 2505,1177
 ```
@@ -312,6 +314,7 @@ nvidia-smi -ac 2505,1177
 参考: http://docs.aws.amazon.com/zh_cn/AWSEC2/latest/UserGuide/install-nvidia-driver.html
 
 ### 2.2 安装cuda toolkit
+
 ```
 wget https://developer.nvidia.com/compute/cuda/9.0/Prod/local_installers/cuda_9.0.176_384.81_linux-run
 /bin/bash ./cuda_9.0.176_384.81_linux-run
