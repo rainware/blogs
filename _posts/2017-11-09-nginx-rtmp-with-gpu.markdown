@@ -282,6 +282,8 @@ EOF
 
 * 下载安装nvidia driver
 
+如下
+
 ```
 wget http://us.download.nvidia.com/XFree86/Linux-x86_64/367.122/NVIDIA-Linux-x86_64-367.122.run
 
