@@ -24,6 +24,7 @@ Seaflow是一个基于DAG的工作流调度引擎，旨在进行最自由的任�
   * Sub Task: 执行子Dag产生的子任务
 * Step: 步骤，任务的组成部分，Node的执行会产生Step
 
+<a href="https://github.com/rainware/seaflow">SourceCodes And Examples</a>
 
 # 2. 特性
 1. Json DSL定义
@@ -68,14 +69,14 @@ Demo
 # 3. Dag定义
 
 ## 3.1 Param
-##### ParamType, 参数类型
+#### ParamType, 参数类型
 * String: 字符串
 * Number: 数字，包括int, float等数字类型
 * Boolean: 布尔类型
 * Array: 数组类型，同JsonArray
 * Object: 对象类型，同JsonObject
 
-##### ParamDefinition, 参数定义
+#### ParamDefinition, 参数定义
 * type: ParamType
 * required: true/false, 是否必须
 * default: 默认值
@@ -90,7 +91,7 @@ Demo
 }
 ```
 
-##### ParamAdapter, 参数适配器
+#### ParamAdapter, 参数适配器
 用于适配前面task/step的输出和后面task/step的输入, 基于<a href="https://support.smartbear.com/alertsite/docs/monitors/api/endpoint/jsonpath.html">JSONPath</a>
 ```language=javascript
 {
@@ -162,15 +163,15 @@ Demo
 ]
 ```
 
-##### name
+#### name
 不可重复
 
-##### type
+#### type
 * Default: 默认类型，有具体的函数，使用@Seaflow.action装饰器修饰
 * Carrier: 搬运工，用于Carrier节点
 * External: 外部action，用于外部节点
 
-##### func
+#### func
 type=Default时，需要定义具体的执行函数
 ```language=python
 from seaflow.base import Seaflow
@@ -194,10 +195,10 @@ def action(self, **params):
     }
 ```
 
-##### input_def
+#### input_def
 输入参数定义
 
-##### output_def
+#### output_def
 输出参数定义
 
 ## 3.3 Root Dag
@@ -218,22 +219,22 @@ def action(self, **params):
   ]
 }
 ```
-##### identifier
+#### identifier
 在dag定义中的唯一标识，用于表达各种dag与node的编排关系时的引用id
 
-##### name
+#### name
 名称，与version联合唯一
 
-##### version
+#### version
 版本，与name联合唯一
 
-##### input_adapter
+#### input_adapter
 输入适配器，ParamAdapter
 
-##### output_adapter
+#### output_adapter
 输出适配器，ParamAdapter
 
-##### components
+#### components
 组件列表，包括sub dags/nodes
 
 ## 3.4 Sub Dag
@@ -267,37 +268,37 @@ def action(self, **params):
   "previous_dags": ["dag-x1", "dag-x2"]
 }
 ```
-##### identifier
+#### identifier
 
-##### kind
+#### kind
 类型，Dag
 
-##### name
+#### name
 
-##### ref
+#### ref
 {name}.{version}, 引用/复用数据库中已存在的root dag的components
 
-##### parent
+#### parent
 所属dag的identifier，如果为空则直属于root dag
 
-##### fission
+#### fission
 分裂配置，不传则不可分裂
   * key: 必传，指定的分裂key(适配前)，基于JSONPath
 
-##### iter
+#### iter
 迭代配置，不传则不可迭代
   * key: 和condition至少传一个，指定的迭代key(适配前)，基于JSONPath
   * condition: 和key至少传一个，迭代持续条件，基于<a href="https://jsonlogic.com/">JSONLogic</a>
   * countdown: 每次进行下一次循环前, 等待的时长(s)
 
-##### input_adapter
+#### input_adapter
 
-##### output_adapter
+#### output_adapter
 
-##### previous_nodes
+#### previous_nodes
 关联关系，数组元素是node的identifier
 
-##### previous_dags
+#### previous_dags
 关联关系，数组元素是sub dag的identifier
 
 ## 3.5 Node
@@ -346,50 +347,50 @@ def action(self, **params):
   "previous_dags": []
 }
 ```
-##### identifier
+#### identifier
 
-##### kind
+#### kind
 类型，Node
 
-##### name
+#### name
 
-##### parent
+#### parent
 所属的dag的identifier，如果为空则直属于root dag
 
-##### action
+#### action
 职能action的name
 
-##### fission
+#### fission
 
-##### iter
+#### iter
 
-##### loop
+#### loop
 循环配置，不传则不可循环
   * key: 和condition至少传一个，指定的循环的key(适配前)，基于JSONPath
   * condition: 循环持续条件，基于<a href="https://jsonlogic.com/">JSONLogic</a>
   * countdown: 每次进行下一次循环前, 等待的时长(s)
 
-##### timeout
+#### timeout
 超时时间(s)
 
-##### retry
+#### retry
 重试配置, 不传则不可重试
   * max_retries: 最大重试次数
   * countdown: 每次重试的等待时间
 
-##### input_adapter
+#### input_adapter
 
-##### output_adapter
+#### output_adapter
 
-##### previous_nodes
+#### previous_nodes
 关联关系，数组元素是node的identifier
 
-##### previous_dags
+#### previous_dags
 关联关系，数组元素是sub dag的identifier
 
 ## 3.6 加载Dag定义
 
-##### 加载Action定义
+#### 加载Action定义
 ```language=python
 from seaflow.base import Seaflow
 
@@ -397,7 +398,7 @@ actions = []
 Seaflow.load_actions(actions)
 ```
 
-##### 加载Dag定义
+#### 加载Dag定义
 ```language=python
 from seaflow.base import Seaflow
 
@@ -415,14 +416,12 @@ seaflow底层基于django.db.models和异步任务调度框架<a href="https://d
 
 ## 4.2 安装
 ```language=bash
-# 暂不支持
 pip install seaflow
 ```
 ## 4.3 基于django框架的seaflow服务启动
 
 1. <a href="https://docs.celeryq.dev/en/stable/django/first-steps-with-django.html#using-celery-with-django">在django中配置Celery</a>
-2. 将seaflow目录复制到项目中
-3. 在django settings.INSTALLED_APPS中添加seaflow
+2. 在django settings.INSTALLED_APPS中添加seaflow
 ```language=python
 # ...
 INSTALLED_APPS = [
@@ -433,41 +432,49 @@ INSTALLED_APPS = [
 4. 为seaflow设置celery app
 ```language=python
 import os
+import django
 from celery import Celery
-from . import seaflow
-os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'core.settings')
-# app definition, 名字随意，启动worker时要使用这个名字
-app = Celery('core')
+import seaflow
+#
+# django settings
+os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'settings')
+django.setup()
+#
+# celery app definition
+app = Celery()
 app.config_from_object('django.conf:settings', namespace='CELERY')
-# 在actions包下面定义actions，也可以使用别的名字
-app.autodiscover_tasks(related_name='actions')
+#
+# set celery app for seaflow
 seaflow.set_celery_app(app)
+#
+# discover your action definitions
+seaflow.autodiscover_actions(packages=['xxx'], related_name='actions', force=True)
 ```
 
 5. 启动celery worker
 ```language=bash
-celery -A core worker --concurrency=3 -E -l info
+celery -A {your celery app name} worker --concurrency=3 -E -l info
 ```
 
 # 5. 任务的执行与控制
 
 ## 5.1 Config
 
-##### TaskConfig
+#### TaskConfig
 * countdown
 * timeout
 * max_retries
 * retry_countdown
 * callback
 
-##### StepConfig
+#### StepConfig
 * countdown: 执行前的倒数时间
 * timeout: 超时时间, 覆盖Node定义中的timeout参数
 * max_retries: 最大重试次数，覆盖Node定义中的retry.max_retries参数
 * retry_countdown: 重试倒数时间，覆盖Node定义中的retry.countdown参数
 * callback: CallbackConfig，回调配置
 
-##### CallbackConfig
+#### CallbackConfig
 * is_async: 是否异步
 * func: 回调函数
 
@@ -543,7 +550,7 @@ task.apply()
 
 ## 5.4 状态
 
-##### TaskStates
+#### TaskStates
 * PENDING: 等待中, 任务刚创建时等待执行的状态
 * PROCESSING: 正在执行
 * SLEEP: 休眠
@@ -554,7 +561,7 @@ task.apply()
 * REVOKE: 撤销
 * TERMINATE: 终止
 
-##### StepStates
+#### StepStates
 * PENDING: 等待中
 * PUBLISH: 已发布, 外部节点产生的step进入PUBLISH的状态后，可以被订阅获取，被获取后状态变为PROCESSING
 * PROCESSING: 正在执行
@@ -626,10 +633,10 @@ Seaflow.fail_external_step(step_id=step_id, error="error message", outputs={})
 # 7. Callback
 执行过程中当root task/sub task和step的状态发生改变时都会执行回调
 
-##### 回调配置
+#### 回调配置
 见CallbackConfig
 
-##### 回调参数
+#### 回调参数
 * event: 以TASK_和STEP_开头，用于区分task和step的回调，例如TASK_STATE_SUCCESS
 * data: task或step的json数据
 
@@ -641,7 +648,7 @@ def on_callback(event, data):
 # 8. 日志
 seaflow.seagull.Seagull是seaflow的日志处理类，seagull是海鸥的英文单词，寓意为记录消息的海鸟
 
-##### 记录日志
+#### 记录日志
 ```language=python
 seagull.debug()
 seagull.info()
@@ -649,9 +656,9 @@ seagull.warn()
 seagull.error()
 ```
 
-##### 日志buffer
+#### 日志buffer
 可配置（待实现）
-##### 持久化存储（待实现）
+#### 持久化存储（待实现）
 
 * 有效期内的日志存储在mysql中
 * 过期日志存储到s3，支持refetch
@@ -722,7 +729,7 @@ seagull.error()
 
 ## 9.3 Fission
 
-##### 输入参数处理流程
+#### 输入参数处理流程
 ```language=javascript
 // input before adaption
 {
@@ -754,7 +761,7 @@ seagull.error()
 
 ## 9.4 Iter
 
-##### 配置了iter key时的参数处理流程
+#### 配置了iter key时的参数处理流程
 ```language=javascript
 // input before adaption
 {
@@ -786,7 +793,7 @@ seagull.error()
 
 ## 9.5 Loop
 
-##### 配置了loop key时的参数处理流程
+#### 配置了loop key时的参数处理流程
 ```language=javascript
 // input before adaption
 {
