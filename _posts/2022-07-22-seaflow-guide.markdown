@@ -11,8 +11,7 @@ tags: [seaflow, workflow, process choreographer, async scheduler, python, celery
 Seaflow是一个基于DAG的工作流调度引擎，旨在进行最自由的任务编排。思路来自于河流(Riverflow)，DAG就是设定的河道，水流入之后就会沿着河道流动，任意的分叉或汇合。
 > DAG: 有向无环图
 
-<img alt="seaflow-7aa5327e.png" src="https://rainware.github.io/blogs/images/seaflow/seaflow-7aa5327e.png" height="300" >
-<img alt="seaflow-7aa5327e.png" src="https://rainware.github.io/blogs/images/seaflow/seaflow-39743ec1.png" height="300" >
+<img alt="seaflow-7aa5327e.png" src="https://rainware.github.io/blogs/images/seaflow/seaflow-7aa5327e.png" height="300" ><img alt="seaflow-7aa5327e.png" src="https://rainware.github.io/blogs/images/seaflow/seaflow-39743ec1.png" height="300" >
 
 名词:
 * DAG: 有向无环图，工作流定义
