@@ -2,17 +2,17 @@
 layout: post
 title:  "Seaflow Guide"
 date:   2022-07-22 20:00:00 +0800
-category: Project Documents
+category: ["Project Documents"]
 tagline: "Supporting tagline"
-tags: ['seaflow', 'workflow', 'process choreographer', 'async scheduler', 'python', 'celery']
+tags: [seaflow, workflow, process choreographer, async scheduler, python, celery]
 ---
 
 # 1. 概述
 Seaflow是一个基于DAG的工作流调度引擎，旨在进行最自由的任务编排。思路来自于河流(Riverflow)，DAG就是设定的河道，水流入之后就会沿着河道流动，任意的分叉或汇合。
 > DAG: 有向无环图
 
-<img alt="seaflow-7aa5327e.png" src="images/seaflow/seaflow-7aa5327e.png" height="300" >
-<img alt="seaflow-39743ec1.png" src="images/seaflow/seaflow-39743ec1.png" height="300" >
+![ ](/blogs/images/seaflow/seaflow-7aa5327e.png|height=300px)
+![ ](/blogs/images/seaflow/seaflow-39743ec1.png|height=300px)
 
 名词:
 * DAG: 有向无环图，工作流定义
@@ -64,7 +64,7 @@ Demo
 * 可迭代Node: 执行时，迭代出多个Step串行处理。如B3
 * 可循环Node: 循环执行同一个Step, 直到不再满足循环持续条件。如A1
 
-<img alt="seaflow-9407cb29.png" src="images/seaflow/seaflow-9407cb29.png" width="" height="" >
+![ ](/blogs/images/seaflow/seaflow-9407cb29.png " ")
 
 # 3. Dag定义
 
@@ -412,7 +412,7 @@ print(Seaflow.dump_dag_dsl(dag_name='BuildPackDeploy', dag_version=1, root_ident
 ## 4.1 系统架构
 seaflow底层基于django.db.models和异步任务调度框架<a href="https://docs.celeryq.dev/en/stable/">Celery</a>
 
-<img alt="seaflow-8477c4ab.png" src="images/seaflow/seaflow-8477c4ab.png" width="" height="" >
+![ ](/blogs/images/seaflow/seaflow-8477c4ab.png " ")
 
 ## 4.2 安装
 ```language=bash
@@ -662,7 +662,7 @@ seagull.error()
 ## 9.1 Seaflow核心处理流程
 仅供辅助阅读源码使用
 
-<img alt="seaflow-4a3aa65a.png" src="images/seaflow/seaflow-4a3aa65a.png" width="" height="" >
+![ ](/blogs/images/seaflow/seaflow-4a3aa65a.png " ")
 
 ## 9.2 任务执行过程中output参数的merge
 相同的key，merge后的值为array
